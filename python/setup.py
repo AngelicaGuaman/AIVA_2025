@@ -9,9 +9,7 @@ setup(
     author="Angélica Guaman y Lorenzo Costábile",
     install_requires=[
         'numpy',
-        'pillow',
-        'base64',
-        'io'
+        'pillow'
     ],
     extras_require={
         'dev': [
