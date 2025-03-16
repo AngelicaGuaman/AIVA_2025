@@ -11,8 +11,8 @@ pip install setuptools
 Para instalar la librería, primero debemos clonar el repositorio e instalar el módulo de python:
 
 ```bash
-git clone https://github.com/patrolscan/patrolscan.git
-cd patrolscan/python
+git clone https://github.com/AngelicaGuaman/AIVA_2025
+cd AIVA_2025/python
 pip install -e .
 ```
 
