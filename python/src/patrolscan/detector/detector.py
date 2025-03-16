@@ -16,6 +16,6 @@ class Detector:
         """
         results = []
         for image_numpy_array in lista_image_numpy_array:
-            results.append([0.0, 0.0, 0.0, 0.0])
+            results.append([[0.0, 0.0, 0.0, 0.0]])
         return results
     
