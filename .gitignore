@@ -171,3 +171,7 @@ cython_debug/
 .pypirc
 
 venv_*
+*.pt
+dataset/
+dataset/*
+*.mp4
