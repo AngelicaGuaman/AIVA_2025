@@ -16,7 +16,7 @@ public class PlateRecognitionServiceImpl implements PlateRecognitionService {
     @Override
     public Optional<String> recognizePlate(File imageFile) {
         log.info("Procesando la imagen {}", imageFile.getName());
-        String detectedPlate = "ABC1234";
+        String detectedPlate = "1234ABC";
 
         return Optional.of(detectedPlate);
     }
@@ -28,8 +28,8 @@ public class PlateRecognitionServiceImpl implements PlateRecognitionService {
         List<String> detectedPlates = new ArrayList<>();
 
         // Simulación de detección en distintos frames del video
-        detectedPlates.add("ABC1234");
-        detectedPlates.add("XYZ5678");
+        detectedPlates.add("1234ABC");
+        detectedPlates.add("5678XYZ");
 
         return detectedPlates;
     }
