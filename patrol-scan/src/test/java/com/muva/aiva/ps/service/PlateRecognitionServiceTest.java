@@ -1,8 +1,13 @@
 package com.muva.aiva.ps.service;
 
 import com.muva.aiva.ps.service.impl.PlateRecognitionServiceImpl;
+import com.muva.aiva.ps.service.impl.RunPythonServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
 import java.util.List;
@@ -10,13 +15,20 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//@ExtendWith(MockitoExtension.class)
 class PlateRecognitionServiceTest {
 
-    private PlateRecognitionService plateRecognitionService;
+  //  @InjectMocks
+    private PlateRecognitionServiceImpl plateRecognitionService;
+
+    //@Mock
+    private RunPythonService runPythonService;
 
     @BeforeEach
     void setUp() {
-        plateRecognitionService = new PlateRecognitionServiceImpl();
+        runPythonService = new RunPythonServiceImpl();
+        plateRecognitionService = new PlateRecognitionServiceImpl(runPythonService);
+
     }
 
     @Test
