@@ -2,7 +2,7 @@ import base64
 import numpy as np
 import io
 from PIL import Image
-from patrolscan.utils import is_valid_license_plate
+from patrolscan.utils import is_valid_license_plate, obtener_recortes_imagenes
 
 
 class PatrolScan:
@@ -12,8 +12,8 @@ class PatrolScan:
 
     def _init_modules(self):
         """Inicializa los módulos principales"""
-        from .detector import Detector
-        from .ocr import OCR
+        from patrolscan.detector import Detector
+        from patrolscan.ocr import OCR
         
         self.detector = Detector()
         self.ocr = OCR()
@@ -70,7 +70,6 @@ class PatrolScan:
 
         return self.__pipeline([image_numpy_array])
 
-
     def batch_scan_bytes(self, images_in_bytes):
         """
         Simula el procesamiento de múltiples imágenes
@@ -93,7 +92,6 @@ class PatrolScan:
 
         return self.__pipeline(images_in_numpy_array)
     
-
     def batch_scan_base64(self, images_in_base64):
         """
         Simula el procesamiento de múltiples imágenes en formato base64
@@ -137,16 +135,25 @@ class PatrolScan:
     
     def __pipeline(self, lista_image_numpy_array):
 
-        lista_imagenes_detectadas = self.detector.detect(lista_image_numpy_array)
-
+        lista_listas_zonas_detectadas = self.detector.detect(lista_image_numpy_array)
 
         lista_matriculas_detectadas = []
-        for zonas_detectadas in lista_imagenes_detectadas:
-            for zona_detectada in zonas_detectadas:
-                texto_extraido = self.ocr.extract_text(zona_detectada)
+        for i, lista_zonas_detectadas in enumerate(lista_listas_zonas_detectadas):
+            lista_recortes_imagenes = obtener_recortes_imagenes(lista_zonas_detectadas, lista_image_numpy_array[i])
+
+            for recorte_imagen in lista_recortes_imagenes:
+                texto_extraido = self.ocr.extract_text(recorte_imagen)
                 if is_valid_license_plate(texto_extraido):
                     lista_matriculas_detectadas.append(texto_extraido)
 
         return lista_matriculas_detectadas
 
+
+if __name__ == "__main__":
+    patrolscan = PatrolScan()
+    image_path = "dataset/20250131_155750/frames/frame0134.png"
+    import cv2
+    image_numpy_array = cv2.imread(image_path)
+    result = patrolscan.scan_numpy_array(image_numpy_array)
+    print(result)
 
