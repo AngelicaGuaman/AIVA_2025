@@ -102,7 +102,7 @@ class Detector:
             lista_image_numpy_array (list): Lista de numpy arrays que representan imágenes
             
         Returns:
-            list: Lista de regiones detectadas (simuladas)
+            list: Lista de regiones detectadas con coordenadas numéricas
         """
         
         results = []
@@ -110,6 +110,11 @@ class Detector:
             imagen_a_detectar = self.preprocess_image(image_numpy_array)
             resultados_procesados = self.process(imagen_a_detectar, image_numpy_array)
             resultados_procesados = self.non_max_suppression(resultados_procesados)
-            results.append(resultados_procesados)
+            # Convertir todos los valores a números (float o int)
+            resultados_numericos = []
+            for region in resultados_procesados:
+                region_numerica = [float(coord) for coord in region]
+                resultados_numericos.append(region_numerica)
+            results.append(resultados_numericos)
         return results
     

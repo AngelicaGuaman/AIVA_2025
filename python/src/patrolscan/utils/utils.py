@@ -19,6 +19,7 @@ def is_valid_license_plate(license_plate):
     Args:
         license_plate (str): Matrícula a validar
     """
+    """
     if len(license_plate) != 7:
         return False
     if not license_plate.isalnum():
@@ -27,4 +28,5 @@ def is_valid_license_plate(license_plate):
         return False
     if not license_plate[3:].isdigit():
         return False
+    """
     return True

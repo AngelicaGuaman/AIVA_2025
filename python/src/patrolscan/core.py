@@ -15,7 +15,7 @@ class PatrolScan:
         from patrolscan.detector import Detector
         from patrolscan.ocr import OCR
         
-        self.detector = Detector()
+        self.detector = Detector(self.config.modelo_detector_path, self.config.providers_onnx, self.config.conf_threshold_detector, self.config.iou_threshold_detector)
         self.ocr = OCR()
 
     def scan_bytes(self, image_bytes):
@@ -151,7 +151,7 @@ class PatrolScan:
 
 if __name__ == "__main__":
     patrolscan = PatrolScan()
-    image_path = "dataset/20250131_155750/frames/frame0134.png"
+    image_path = "dataset/20250131_155750/frames/frame1934.png"
     import cv2
     image_numpy_array = cv2.imread(image_path)
     result = patrolscan.scan_numpy_array(image_numpy_array)

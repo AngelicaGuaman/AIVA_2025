@@ -1,25 +1,27 @@
 import pytest
 import numpy as np
-from patrolscan import PatrolScan
+from patrolscan import PatrolScan, Config
 from PIL import Image
 import io
 import base64
+import os
+
+IMAGEN_TEST_PATH = "ImagenTest8966LFF.png"
 
 # Fixtures reutilizables
 @pytest.fixture
 def scanner():
-    return PatrolScan()
+    config = Config()
+    config.modelo_detector_path = "license_plate_detector.onnx"
+    return PatrolScan(config)
 
 @pytest.fixture
 def imagen_prueba_bytes():
-    # Crear una imagen de prueba
-    imagen_prueba = np.zeros((100, 100, 3), dtype=np.uint8)
-
-    # Convertir la imagen a bytes
-    pil_imagen = Image.fromarray(imagen_prueba)
-    buffer = io.BytesIO()
-    pil_imagen.save(buffer, format='JPEG')
-    return buffer.getvalue()
+    # Cargar la imagen de prueba
+    imagen_path = IMAGEN_TEST_PATH
+    with open(imagen_path, 'rb') as f:
+        imagen_bytes = f.read()
+    return imagen_bytes
 
 @pytest.fixture
 def imagen_prueba_base64(imagen_prueba_bytes):
@@ -27,8 +29,9 @@ def imagen_prueba_base64(imagen_prueba_bytes):
 
 @pytest.fixture
 def imagen_prueba_numpy():
-    # Crear una imagen de prueba
-    imagen = np.zeros((100, 100, 3), dtype=np.uint8)
+    # Cargar la imagen de prueba
+    imagen_path = IMAGEN_TEST_PATH
+    imagen = np.array(Image.open(imagen_path))
     return imagen
 
 def test_patrolscan_initialization(scanner):
@@ -96,3 +99,22 @@ def test_scan_numpy_array_invalid_input(scanner):
     """Prueba que se lance una excepción con entrada inválida"""
     with pytest.raises(ValueError, match="El tipo de datos no son numpy array"):
         scanner.scan_numpy_array("esto no es un array")
+
+def test_funcional_reocnocimiento(scanner):
+    """Test con una imagen real de una matrícula conocida"""
+    
+    # Ruta a la imagen de prueba real
+    imagen_path = IMAGEN_TEST_PATH
+    
+    # Verificar que la imagen existe
+    assert os.path.exists(imagen_path), f"La imagen de prueba no existe en: {imagen_path}"
+    
+    # Cargar la imagen como bytes
+    with open(imagen_path, 'rb') as f:
+        imagen_bytes = f.read()
+    
+    # Ejecutar el reconocimiento
+    resultado = scanner.scan_bytes(imagen_bytes)
+    
+    # Verificar que la matrícula esperada está en los resultados
+    assert "8966LFF" in resultado, f"La matrícula esperada no fue detectada. Resultados: {resultado}"
