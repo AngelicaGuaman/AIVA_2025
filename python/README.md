@@ -25,6 +25,7 @@ pip install -e .[dev]
 pytest
 ```
 
+Para poder utilizar PatrolScan es necesario el modelo `license_plate_detector.pt` que no se encuentra subido en el repositorio público, junto con su dataset.
 
 ## 🚀 Uso
 
