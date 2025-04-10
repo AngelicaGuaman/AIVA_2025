@@ -6,10 +6,12 @@ from . import utils
 from . import detector
 from . import ocr
 from .core import PatrolScan
+from .config import Config
 
 __all__ = [
     'detector',
     'ocr',
     'utils',
-    'PatrolScan'
+    'PatrolScan',
+    'Config'
 ]

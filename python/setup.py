@@ -2,14 +2,17 @@ from setuptools import setup, find_packages
 
 setup(
     name="patrolscan",
-    version="0.1.0a1",
+    version="0.1.1",
     package_dir={"": "src"},
     packages=find_packages(where="src"), 
     description="PatrolScan Python Library",
     author="Angélica Guaman y Lorenzo Costábile",
     install_requires=[
         'numpy',
-        'pillow'
+        'pillow',
+        'onnxruntime',
+        'easyocr',
+        'opencv-python'
     ],
     extras_require={
         'dev': [
