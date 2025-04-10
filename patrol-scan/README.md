@@ -38,4 +38,17 @@ mvn clean install
     <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
-[Próximamente]
+
+## 🏗 Diagramas UML
+
+### Diagrama de clases
+
+![Diagrama de clases del módulo Java](../documentation/diagram/clases/DiagramaClasesJava.jpg)
+
+### Diagrama de secuencia
+
+![Diagrama de secuencia del módulo Java](../documentation/diagram/secuencia/DiagramaDeSecuenciaPython.jpg)
+
+### Diagrama de actividad
+
+![Diagrama de actividad del módulo Java](../documentation/diagram/actividad/DiagramaActividadJava.jpg)
