@@ -40,4 +40,76 @@ El sistema principal se desarrolla en Python, y mediante el uso de un wrapper de
 
 
 ## 📸 Ejemplos de funcionamiento
-[Próximamente]
+
+### Ejemplo 1: Escenario: Coche estacionado al aire libre en un día nublado.
+1. **Entrada:** Una imagen capturada por la cámara del coche patrulla.
+    ![Detecciones de las matrículas](documentation/ejemplos/ejemplo1/detecciones.jpg)
+
+2. **ROI:** Recorte de la zona:
+   <p align="center">
+        <img src="documentation/ejemplos/ejemplo1/matricula_0_original.jpg" alt="Ejemplo de salida" width="30%">
+        <img src="documentation/ejemplos/ejemplo1/matricula_0_preprocesada_easyocr.jpg" alt="Ejemplo de salida" width="30%">
+        <img src="documentation/ejemplos/ejemplo1/matricula_0_preprocesada_tesseract.jpg" alt="Ejemplo de salida" width="30%">
+    </p>
+
+3. **Resultado:** Matrícula detectada: `4971JBV`
+    ![Resultado ejemplo 1](documentation/ejemplos/ejemplo1/resultado.png)
+
+### Ejemplo 2: Escenario: coches aparcados en un garaje con poca iluminación.
+1. **Entrada:** Imagen con varios vehículos.
+   ![Detecciones de las matrículas](documentation/ejemplos/ejemplo2/detecciones.jpg)
+
+    En esta ocasión, `PatrolScan` ha sido capaz de detectar la matrícula de dos coches.
+    Se hace el recorte de la zona donde está la matrícula y también se aplica la técnica de preprocesamiento de imagen para evaluar el funcionamiento del OCR.
+
+2. **ROI:** Recortes de las zonas:
+   Matrículas del coche izquierdo.
+
+   <p align="center">
+        <img src="documentation/ejemplos/ejemplo2/matricula_0_original.jpg" alt="Ejemplo de salida" width="30%">
+        <img src="documentation/ejemplos/ejemplo2/matricula_0_preprocesada_easyocr.jpg" alt="Ejemplo de salida" width="30%">
+        <img src="documentation/ejemplos/ejemplo2/matricula_0_preprocesada_tesseract.jpg" alt="Ejemplo de salida" width="30%">
+    </p>
+
+    Matrículas del coche derecho.
+
+   <p align="center">
+        <img src="documentation/ejemplos/ejemplo2/matricula_1_original.jpg" alt="Ejemplo de salida" width="30%">
+        <img src="documentation/ejemplos/ejemplo2/matricula_1_preprocesada_easyocr.jpg" alt="Ejemplo de salida" width="30%">
+        <img src="documentation/ejemplos/ejemplo2/matricula_1_preprocesada_tesseract.jpg" alt="Ejemplo de salida" width="30%">
+    </p>
+
+3. **Resultado:** Matrículas detectadas: `8846MLV`, `5429DFM`
+    ![Resultado ejemplo 1](documentation/ejemplos/ejemplo2/resultado.png)
+
+## 🏗 Diagramas UML
+
+### Diagrama de clases
+
+#### Diagrama de clases del módulo Python
+
+![Diagrama de clases del módulo Python](documentation/diagram/clases/DiagramaDeClasePython.jpg)
+
+#### Diagrama de clases del módulo Java
+
+![Diagrama de clases del módulo Java](documentation/diagram/clases/DiagramaClasesJava.jpg)
+
+### Diagrama de secuencia
+
+#### Diagrama de secuencia del módulo Python
+
+![Diagrama de secuencia del módulo Python](documentation/diagram/secuencia/DiagramaDeSecuenciaPython.jpg)
+
+#### Diagrama de secuencia del módulo Java
+
+![Diagrama de secuencia del módulo Java](documentation/diagram/secuencia/DiagramaDeSecuenciaPython.jpg)
+
+### Diagrama de actividad
+
+#### Diagrama de actividad del módulo Python
+
+![Diagrama de actividad del módulo Python](documentation/diagram/actividad/DiagramaDeActividadPython.jpg)
+
+#### Diagrama de actividad del módulo Java
+
+![Diagrama de actividad del módulo Java](documentation/diagram/actividad/DiagramaActividadJava.jpg)
