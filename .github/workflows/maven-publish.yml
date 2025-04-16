@@ -29,9 +29,11 @@ jobs:
           settings-path: ${{ github.workspace }}
 
       - name: ⚙️ Build with Maven
-        run: mvn -B package --file patrol-scan/pom.xml
+        run: mvn -B package --file pom.xml
+        working-directory: patrol-scan
 
       - name: 📦 Publish to GitHub Packages
         run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+        working-directory: patrol-scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
