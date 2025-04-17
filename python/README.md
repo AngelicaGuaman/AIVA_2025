@@ -1,5 +1,7 @@
 # PatrolScan - Python
 
+![Build & Push Docker](https://github.com/AngelicaGuaman/AIVA_2025/actions/workflows/docker-image.yml/badge.svg?branch=develop)
+
 ## 📦 Instalación
 
 Asegúrate de tener Python 3.12 o superior instalado. El paquete `setuptools` es necesario, pero normalmente ya viene con Python. Si no lo tienes, puedes instalarlo con:
@@ -47,7 +49,7 @@ A continuación, se indican los pasos a seguir para construir, etiquetar, public
    Ejecuta el siguiente comando para construir la imagen Docker y etiquetarla correctamente:
 
    ```bash
-   docker build . -t ghcr.io/angelicaguaman/patrolscan-python:latest
+   docker build . -t ghcr.io/angelicaguaman/aiva_2025/patrolscan-python:latest
    ```
 
 2. **Publicar la imagen en el registro de GitHub (GHCR)**  
@@ -60,7 +62,7 @@ A continuación, se indican los pasos a seguir para construir, etiquetar, public
    Luego, se publica la imagen con el siguiente comando:
 
    ```bash
-   docker push ghcr.io/angelicaguaman/patrolscan-python:latest
+   docker push ghcr.io/angelicaguaman/aiva_2025/patrolscan-python:latest
    ```
 
 ### Ejecutar el contenedor Docker
@@ -69,7 +71,13 @@ Para levantar un contenedor Docker, no es necesario que la imagen esté publicad
 Con el siguiente comando podremos ver el funcionamiento de PatrolScan.
 
 ```bash
-docker run --rm ghcr.io/angelicaguaman/patrolscan-python python main.py license_plate_detector.onnx data/frame0076.png
+docker run --rm ghcr.io/angelicaguaman/aiva_2025/patrolscan-python python main.py license_plate_detector.onnx data/frame0076.png
+```
+
+En el caso que no exista la imagen en el entorno local hay que ejecutar el siguiente comando:
+
+```bash
+docker pull ghcr.io/angelicaguaman/aiva_2025/patrolscan-python:latest
 ```
 
 ### Notas importantes
