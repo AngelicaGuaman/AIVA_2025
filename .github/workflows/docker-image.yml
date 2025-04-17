@@ -32,4 +32,4 @@ jobs:
           context: ./python
           file: ./python/Dockerfile
           push: true
-          tags: ghcr.io/angelicaguaman/patrolscan-python:latest
+          tags: ghcr.io/angelicaguaman/aiva_2025/patrolscan-python:latest
