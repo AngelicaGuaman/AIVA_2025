@@ -60,7 +60,7 @@ mvn clean install
 
 ### Diagrama de secuencia
 
-![Diagrama de secuencia del módulo Java](../documentation/diagram/secuencia/DiagramaDeSecuenciaPython.jpg)
+![Diagrama de secuencia del módulo Java](../documentation/diagram/secuencia/DiagramaDeSecuenciaJava.jpg)
 
 ### Diagrama de actividad
 
