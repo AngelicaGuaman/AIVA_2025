@@ -24,7 +24,12 @@ public class PlateRecognitionServiceImpl implements PlateRecognitionService {
     }
 
     @Override
-    public Optional<String> recognizePlate(File imageFile) {
+    public Optional<String> recognizePlate(File imageFile) throws FileNotFoundException {
+
+        if (imageFile == null || !imageFile.exists() || !imageFile.isFile() || imageFile.length() == 0) {
+            log.error("El fichero proporcionado no es válido: {}", imageFile);
+            return null;
+        }
 
         runPythonService.runner(imageFile);
 
