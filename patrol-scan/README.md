@@ -1,4 +1,7 @@
 # PatrolScan - Java
+
+![Build & Push Maven](https://github.com/AngelicaGuaman/AIVA_2025/actions/workflows/maven-publish.yml/badge.svg?branch=develop)
+
 Esta librería permite invocar algoritmos en Python para la detección y reconocimiento de las matrículas vehiculares.
 
 La aplicación de la Dirección General de Tráfico (DGT) podrá integrar esta librería para procesar imágenes capturadas por cámaras de los coches patrulla.
