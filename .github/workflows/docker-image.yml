@@ -30,6 +30,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./python
-          file: ./Dockerfile
+          file: ./python/Dockerfile
           push: true
           tags: ghcr.io/angelicaguaman/patrolscan-python:latest
