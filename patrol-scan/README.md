@@ -7,7 +7,7 @@ A través de esta integración, la aplicación podrá analizar las imágenes en 
 ## 🚀 Tecnologías utilizadas
 
 - Java 21
-- Maven
+- Maven 3.8.6
 - Lombok
 - JUnit / Mockito
 - Spring Boot
@@ -22,13 +22,26 @@ cd AIVA_2025/patrol-scan
 mvn clean install
 ```
 
-### 🔬 Versión alpha
+### 🔬 Versión
 
-Actualmente, los tests unitarios son mocks. Para poder lanzarlos hay que ejecutar el siguiente comando:
+#### Pruebas de funcionamiento
 
+Para verificar el funcionamiento de la biblioteca, ejecuta la clase de prueba `PlateRecognitionServiceTest`.
+
+#### Requisitos previos
+
+Es necesario definir la variable de entorno `PYTHON_PATH` o definir en el `application.properties` la variable `patrolscan.python.path`, la cual debe apuntar al entorno de Python que contiene todas las bibliotecas requeridas para la detección y reconocimiento de matrículas.
+
+#### Ejecución de pruebas
+
+Para ejecutar las pruebas, utiliza el siguiente comando:
 ```bash
 mvn clean install
 ```
+
+#### Resultado:
+
+![Resultado del test](../images/javaResult.png)
 
 ## 🚀 Uso
 ```xml

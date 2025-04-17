@@ -33,8 +33,8 @@ El sistema principal se desarrolla en Python, y mediante el uso de un wrapper de
 [Próximamente]
 
 ### Instalación
-Para el módulo Python esta información se encuentra en python/README.md
-Para el módulo Java esta información se encuentra en patrol-scan/README.md
+Para el módulo Python esta información se encuentra en `python/README.md`<br>
+Para el módulo Java esta información se encuentra en `patrol-scan/README.md`
 
 ### Uso
 [Próximamente]

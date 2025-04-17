@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ class PlateRecognitionServiceMockTest {
     }
 
     @Test
-    void testMockRecognizePlate() {
+    void testMockRecognizePlate() throws FileNotFoundException {
         File mockImage = new File("mock_image.jpg");
 
         when(plateRecognitionServiceMock.recognizePlate(mockImage)).thenReturn(Optional.of("5678XYZ"));

@@ -1,8 +1,9 @@
 package com.muva.aiva.ps.service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public interface RunPythonService {
 
-    void runner (File videoFile);
+    Object runner (File videoFile) throws FileNotFoundException;
 }

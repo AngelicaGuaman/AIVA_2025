@@ -1,6 +1,9 @@
 package com.muva.aiva.ps.service.impl;
+
+import com.muva.aiva.ps.configuration.PythonConfig;
 import com.muva.aiva.ps.service.RunPythonService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -11,27 +14,35 @@ import java.nio.file.StandardCopyOption;
 @Slf4j
 public class RunPythonServiceImpl implements RunPythonService {
 
+    @Autowired
+    private PythonConfig config;
+
     @Override
-    public void runner(File videoFile) {
+    public Object runner(File videoFile) throws FileNotFoundException {
+
+        InputStream iSPythonScript = readResourceFile("main.py");
+        InputStream iSLicenseModel = readResourceFile("license_plate_detector.onnx");
+
         try {
-            InputStream inputStream = PlateRecognitionServiceImpl.class.getClassLoader().getResourceAsStream("script.py");
 
-            if (inputStream == null) {
-                throw new FileNotFoundException("El script no se encontró en resources");
-            }
-
-            File tempScript = File.createTempFile("script", ".py");
+            File tempScript = File.createTempFile("main", ".py");
             tempScript.deleteOnExit();
 
             // Copiar contenido del script al archivo temporal
-            Files.copy(inputStream, tempScript.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(iSPythonScript, tempScript.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-            // Argumentos para el script Python
-            String arg1 = "hola";
-            String arg2 = "mundo";
+            File tempModel = File.createTempFile("license_plate_detector", ".onnx");
+            tempModel.deleteOnExit();
+
+            // Copiar contenido del script al archivo temporal
+            Files.copy(iSLicenseModel, tempModel.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            log.info("path {}",config.getPath());
 
             // Ejecutar Python con argumentos
-            ProcessBuilder processBuilder = new ProcessBuilder("python3", tempScript.getAbsolutePath(), arg1, arg2);
+            ProcessBuilder processBuilder = new ProcessBuilder(config.getPath(),
+                    tempScript.getAbsolutePath(), tempModel.getAbsolutePath(), videoFile.getAbsolutePath());
+
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
@@ -49,5 +60,16 @@ public class RunPythonServiceImpl implements RunPythonService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    private InputStream readResourceFile(String fileName) throws FileNotFoundException {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
+
+        if (inputStream == null) {
+            throw new FileNotFoundException("El archivo " + fileName + " no se encontró en resources");
+        }
+
+        return inputStream;
     }
 }
