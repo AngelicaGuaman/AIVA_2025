@@ -29,9 +29,15 @@ jobs:
           settings-path: ${{ github.workspace }}
 
       - name: ⚙️ Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn clean verify # mvn -B package --file pom.xml
         working-directory: patrol-scan
 
+      - name: 📂 Upload JaCoCo coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: patrol-scan/target/site/jacoco
+      
       - name: 📦 Publish to GitHub Packages
         run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
         working-directory: patrol-scan
