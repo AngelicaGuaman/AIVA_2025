@@ -8,6 +8,7 @@ on:
     branches:
       - main
       - develop
+      - 76-calidad-del-código-java
 
 jobs:
   build-and-publish:
@@ -15,6 +16,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      pull-requests: read # allows SonarQube to decorate PRs with analysis results
 
     steps:
       - name: 🧾 Checkout code
@@ -28,9 +30,28 @@ jobs:
           server-id: github
           settings-path: ${{ github.workspace }}
 
-      - name: ⚙️ Build with Maven
-        run: mvn -B package --file pom.xml
+      - name: ⚙️ Build, test & coverage
+        run: mvn clean verify
         working-directory: patrol-scan
+
+      - name: Check Jacoco report
+        run: test -f target/site/jacoco/jacoco.xml && echo "Found Jacoco report"
+        working-directory: patrol-scan
+      
+      - name: 📊 Analyze with SonarQube
+        uses: SonarSource/sonarqube-scan-action@v1.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey=angelicaguaman_aiva_2025
+            -Dsonar.projectBaseDir=patrol-scan
+            -Dsonar.sources=src/main/java
+            -Dsonar.tests=src/test/java
+            -Dsonar.java.binaries=target/classes
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
       - name: 📦 Publish to GitHub Packages
         run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
