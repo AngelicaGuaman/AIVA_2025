@@ -46,8 +46,8 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           args: >
-            -Dsonar.organization=angelicaguaman
-            -Dsonar.projectKey=angelicaguaman_aiva_2025
+            -Dsonar.organization=Patrol Scan
+            -Dsonar.projectKey=patrolscan
             -Dsonar.projectBaseDir=patrol-scan
             -Dsonar.sources=src/main/java
             -Dsonar.tests=src/test/java
