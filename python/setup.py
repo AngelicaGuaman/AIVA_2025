@@ -12,7 +12,9 @@ setup(
         'pillow',
         'onnxruntime',
         'easyocr',
-        'opencv-python'
+        'opencv-python',
+        'pytest',
+        'coverage'
     ],
     extras_require={
         'dev': [
