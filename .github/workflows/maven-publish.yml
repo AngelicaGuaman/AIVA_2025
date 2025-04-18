@@ -47,7 +47,7 @@ jobs:
         with:
           args: >
             -Dsonar.organization=PatrolScan
-            -Dsonar.projectKey=AIVA_2025
+            -Dsonar.projectKey=patrolscan
             -Dsonar.projectBaseDir=patrol-scan
             -Dsonar.sources=src/main/java
             -Dsonar.tests=src/test/java
