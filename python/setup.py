@@ -13,8 +13,7 @@ setup(
         'onnxruntime',
         'easyocr',
         'opencv-python',
-        'pytest',
-        'coverage'
+        'pytest'
     ],
     extras_require={
         'dev': [

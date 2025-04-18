@@ -27,13 +27,12 @@ jobs:
         working-directory: python
         run: |
           pip install -e .
-          pip install coverage
+          pip install pytest-cov
 
       - name: 🧪 Run Python Tests
         working-directory: python
         run: |
-          coverage run -m unittest discover
-          coverage xml -o coverage.xml
+          pytest --cov=src --cov-report=xml:coverage.xml
 
       - name: 🛠️ Build Java
         working-directory: patrol-scan
