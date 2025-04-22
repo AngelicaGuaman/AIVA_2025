@@ -3,7 +3,6 @@ package com.muva.aiva.ps.service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 public interface PlateRecognitionService {
 
@@ -13,7 +12,7 @@ public interface PlateRecognitionService {
      * @param imageFile Archivo de imagen que contiene la matrícula.
      * @return Un Optional con la matrícula detectada, vacío si no se detectó ninguna.
      */
-    Optional<String> recognizePlate(File imageFile) throws FileNotFoundException;
+    List<String> recognizePlate(File imageFile) throws FileNotFoundException;
 
     /**
      * Reconoce matrículas en un video procesando fotogramas.
