@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -18,7 +21,8 @@ public class RunPythonServiceImpl implements RunPythonService {
     private PythonConfig config;
 
     @Override
-    public Object runner(File videoFile) throws FileNotFoundException {
+    public List<String> runner(File videoFile) throws FileNotFoundException {
+        List<String> detectedPlates = new ArrayList<>();
 
         InputStream iSPythonScript = readResourceFile("main.py");
         InputStream iSLicenseModel = readResourceFile("license_plate_detector.onnx");
@@ -47,12 +51,9 @@ public class RunPythonServiceImpl implements RunPythonService {
 
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-            // Leer la salida del script Python
-            String line;
-            while ((line = reader.readLine()) != null) {
-                log.info(line);
-            }
+            reader.readLine();
+            detectedPlates = Arrays.asList(reader.readLine().replace("[", "").replace("]", "").replace("'", "").split(",\\s*"));
+            log.info("Matrículas detectadas: {}", detectedPlates);
 
             int exitCode = process.waitFor();
             log.info("Python script finalizado con código: {}", exitCode);
@@ -60,7 +61,7 @@ public class RunPythonServiceImpl implements RunPythonService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return detectedPlates;
     }
 
     private InputStream readResourceFile(String fileName) throws FileNotFoundException {
