@@ -2,12 +2,12 @@ import base64
 import numpy as np
 import io
 from PIL import Image
-from patrolscan.utils import is_valid_license_plate, obtener_recortes_imagenes
-
+from patrolscan.utils import is_valid_license_plate, obtener_recortes_imagenes, preprocess_for_easyocr
+from patrolscan.config import Config
 
 class PatrolScan:
     def __init__(self, config=None):
-        self.config = config or {}
+        self.config = config or Config()
         self._init_modules()
 
     def _init_modules(self):
@@ -140,8 +140,8 @@ class PatrolScan:
         lista_matriculas_detectadas = []
         for i, lista_zonas_detectadas in enumerate(lista_listas_zonas_detectadas):
             lista_recortes_imagenes = obtener_recortes_imagenes(lista_zonas_detectadas, lista_image_numpy_array[i])
-
             for recorte_imagen in lista_recortes_imagenes:
+                # preprocessed_easyocr = preprocess_for_easyocr(recorte_imagen)
                 texto_extraido = self.ocr.extract_text(recorte_imagen)
                 if is_valid_license_plate(texto_extraido):
                     lista_matriculas_detectadas.append(texto_extraido)
@@ -150,10 +150,81 @@ class PatrolScan:
 
 
 if __name__ == "__main__":
-    patrolscan = PatrolScan()
-    image_path = "dataset/20250131_155750/frames/frame1934.png"
-    import cv2
-    image_numpy_array = cv2.imread(image_path)
-    result = patrolscan.scan_numpy_array(image_numpy_array)
-    print(result)
+    import sys
+    import os
+    import argparse
 
+    parser = argparse.ArgumentParser(description="Procesar imágenes o videos con PatrolScan.")
+    parser.add_argument("--model", required=True, help="Ruta al modelo del detector.")
+    parser.add_argument("--image", help="Ruta a la imagen a procesar.")
+    parser.add_argument("--video", help="Ruta al video a procesar.")
+
+    args = parser.parse_args()
+
+    model_path = args.model
+    image_path = args.image
+    video_path = args.video
+
+    #image_path = "src/patrolscan/data/ejemplo1.png"
+
+    #config = {
+    #'modelo_detector_path': model_path,
+    #'providers_onnx': ['CPUExecutionProvider'],
+    #'conf_threshold_detector': 0.5,
+    #'iou_threshold_detector': 0.45
+    #}
+
+    config = Config()
+    config.modelo_detector_path = model_path
+    config.providers_onnx = ['CPUExecutionProvider']
+    config.conf_threshold_detector = 0.5
+    config.iou_threshold_detector = 0.45
+
+    patrolscan = PatrolScan(config=config)
+
+    #image_path = "src/patrolscan/data/ejemplo1.png"
+    
+    import cv2
+
+    if(image_path is not None):
+        image_numpy_array = cv2.imread(image_path)
+
+        if image_numpy_array is None:
+            raise FileNotFoundError(f"No se pudo cargar la imagen desde la ruta: {image_path}")
+        
+        result = patrolscan.scan_numpy_array(image_numpy_array)
+        print(result)
+    else:
+        # It is video
+        video = cv2.VideoCapture(video_path)
+        if not video.isOpened():
+            raise FileNotFoundError(f"No se pudo abrir el video desde la ruta: {video_path}")
+
+        while True:
+            ret, frame = video.read()
+            if not ret:
+                break
+
+            frame_rate = int(video.get(cv2.CAP_PROP_FPS))
+            frame_interval = max(1, frame_rate // 2)  # Process every second frame
+
+            # Skip frames to slow down processing
+            for _ in range(frame_interval - 1):
+                ret, _ = video.read()
+                if not ret:
+                    break
+
+            # Collect 10 frames to pass to PatrolScan
+            frames_batch = []
+            for _ in range(10):
+                ret, frame = video.read()
+                if not ret:
+                    break
+                frames_batch.append(frame)
+            
+            if len(frames_batch) > 0:
+                result = patrolscan.batch_scan_numpy_array(frames_batch)
+                print(result)
+
+        video.release()
+        cv2.destroyAllWindows()
