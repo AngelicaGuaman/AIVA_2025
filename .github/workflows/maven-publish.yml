@@ -22,6 +22,19 @@ jobs:
       - name: 🧾 Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        working-directory: python
+        run: |
+          pip install -e .
+        
+      - name: Export Python path to env
+        run: echo "PYTHON_PATH=$(which python)" >> $GITHUB_ENV
+
       - name: ☕ Setup Java 21
         uses: actions/setup-java@v4
         with:
