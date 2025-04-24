@@ -72,7 +72,7 @@ class PatrolScan:
 
     def batch_scan_bytes(self, images_in_bytes):
         """
-        Simula el procesamiento de múltiples imágenes
+        Procesa múltiples imágenes
         
         Args:
             image_paths (list): Lista de rutas de imágenes
@@ -94,7 +94,7 @@ class PatrolScan:
     
     def batch_scan_base64(self, images_in_base64):
         """
-        Simula el procesamiento de múltiples imágenes en formato base64
+        Procesa múltiples imágenes en formato base64
         
         Args:
             images_in_base64 (list): Lista de cadenas base64 que representan imágenes
@@ -115,7 +115,7 @@ class PatrolScan:
     
     def batch_scan_numpy_array(self, images_in_numpy_array):
         """
-        Simula el procesamiento de múltiples imágenes en formato numpy array
+        Procesa múltiples imágenes en formato numpy array
         
         Args:
             images_in_numpy_array (list): Lista de arrays numpy que representan imágenes
@@ -137,21 +137,19 @@ class PatrolScan:
 
         lista_listas_zonas_detectadas = self.detector.detect(lista_image_numpy_array)
 
-        lista_matriculas_detectadas = []
+        lista_matriculas_detectadas = set()
         for i, lista_zonas_detectadas in enumerate(lista_listas_zonas_detectadas):
             lista_recortes_imagenes = obtener_recortes_imagenes(lista_zonas_detectadas, lista_image_numpy_array[i])
             for recorte_imagen in lista_recortes_imagenes:
                 # preprocessed_easyocr = preprocess_for_easyocr(recorte_imagen)
                 texto_extraido = self.ocr.extract_text(recorte_imagen)
                 if is_valid_license_plate(texto_extraido):
-                    lista_matriculas_detectadas.append(texto_extraido)
+                    lista_matriculas_detectadas.add(texto_extraido)
 
-        return lista_matriculas_detectadas
+        return list(lista_matriculas_detectadas)
 
 
 if __name__ == "__main__":
-    import sys
-    import os
     import argparse
 
     parser = argparse.ArgumentParser(description="Procesar imágenes o videos con PatrolScan.")
@@ -165,15 +163,6 @@ if __name__ == "__main__":
     image_path = args.image
     video_path = args.video
 
-    #image_path = "src/patrolscan/data/ejemplo1.png"
-
-    #config = {
-    #'modelo_detector_path': model_path,
-    #'providers_onnx': ['CPUExecutionProvider'],
-    #'conf_threshold_detector': 0.5,
-    #'iou_threshold_detector': 0.45
-    #}
-
     config = Config()
     config.modelo_detector_path = model_path
     config.providers_onnx = ['CPUExecutionProvider']
@@ -181,8 +170,6 @@ if __name__ == "__main__":
     config.iou_threshold_detector = 0.45
 
     patrolscan = PatrolScan(config=config)
-
-    #image_path = "src/patrolscan/data/ejemplo1.png"
     
     import cv2
 
@@ -208,7 +195,6 @@ if __name__ == "__main__":
             frame_rate = int(video.get(cv2.CAP_PROP_FPS))
             frame_interval = max(1, frame_rate // 2)  # Process every second frame
 
-            # Skip frames to slow down processing
             for _ in range(frame_interval - 1):
                 ret, _ = video.read()
                 if not ret:
