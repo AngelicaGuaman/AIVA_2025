@@ -53,8 +53,10 @@ jobs:
           PYTHON_PATH: ${{ env.PYTHON_PATH }}
 
       - name: List resources in target/classes
-        run: ls -R target/classes
-        working-directory: patrol-scan
+        run: ls -R patrol-scan/target/classes
+
+      - name: List resources in target/test-classes
+        run: ls -R patrol-scan/target/test-classes
 
       - name: ⚙️ Test & coverage
         run: mvn clean verify
