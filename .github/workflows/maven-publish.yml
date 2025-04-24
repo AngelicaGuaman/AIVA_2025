@@ -35,6 +35,9 @@ jobs:
       - name: Export Python path to env
         run: echo "PYTHON_PATH=$(which python)" >> $GITHUB_ENV
 
+      - name: Show Python path
+        run: echo "Python path is $PYTHON_PATH"
+      
       - name: ☕ Setup Java 21
         uses: actions/setup-java@v4
         with:
@@ -46,6 +49,8 @@ jobs:
       - name: ⚙️ Build, test & coverage
         run: mvn clean verify
         working-directory: patrol-scan
+        env:
+          PYTHON_PATH: ${{ env.PYTHON_PATH }}
 
       - name: 📂 Upload JaCoCo coverage report
         uses: actions/upload-artifact@v4
