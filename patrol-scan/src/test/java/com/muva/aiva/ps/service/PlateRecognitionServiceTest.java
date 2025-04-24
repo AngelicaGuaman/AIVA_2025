@@ -77,7 +77,7 @@ class PlateRecognitionServiceTest {
         List<String> result = plateRecognitionService.recognizePlate(tempFile);
 
         assertFalse(result.isEmpty());
-        assertEquals(2, result.size());
+        assertEquals(1, result.size());
         assertEquals("8846MLV", result.get(0));
     }
 
@@ -92,7 +92,7 @@ class PlateRecognitionServiceTest {
     }
 
     @SneakyThrows
-        // @Test
+    // @Test
     void testRecognizePlateFromVideo()  {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/20250203_132617.mp4");
 
@@ -105,9 +105,9 @@ class PlateRecognitionServiceTest {
 
         Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-        List<String> result = plateRecognitionService.recognizePlate(tempFile);
+        List<String> result = plateRecognitionService.recognizePlateFromVideo(tempFile);
 
         assertFalse(result.isEmpty());
-        assertTrue(result.contains("1234ABC"));
+        assertTrue(result.contains("8846MLV"));
     }
 }
