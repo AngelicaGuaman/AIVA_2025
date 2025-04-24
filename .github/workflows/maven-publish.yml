@@ -52,6 +52,9 @@ jobs:
         env:
           PYTHON_PATH: ${{ env.PYTHON_PATH }}
 
+      - name: List resources in target/classes
+        run: ls -R target/classes
+        
       - name: 📂 Upload JaCoCo coverage report
         uses: actions/upload-artifact@v4
         with:
