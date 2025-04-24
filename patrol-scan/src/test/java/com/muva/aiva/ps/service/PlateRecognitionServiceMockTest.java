@@ -37,7 +37,7 @@ class PlateRecognitionServiceMockTest {
     }
 
     @Test
-    void testMockRecognizePlateFromVideo() {
+    void testMockRecognizePlateFromVideo() throws FileNotFoundException {
         File mockVideo = new File("mock_video.mp4");
 
         when(plateRecognitionServiceMock.recognizePlateFromVideo(mockVideo))
