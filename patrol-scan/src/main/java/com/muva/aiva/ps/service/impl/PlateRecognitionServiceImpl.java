@@ -32,21 +32,22 @@ public class PlateRecognitionServiceImpl implements PlateRecognitionService {
 
         log.info("Procesando la imagen {}", imageFile.getName());
 
-        List<String> detectedPlates = runPythonService.runner(imageFile);
+        List<String> detectedPlates = runPythonService.runner(imageFile, null);
 
         return detectedPlates;
     }
 
     @Override
-    public List<String> recognizePlateFromVideo(File videoFile) {
+    public List<String> recognizePlateFromVideo(File videoFile) throws FileNotFoundException {
         log.info("Procesando video: {}", videoFile.getName());
 
-        // List<String> detectedPlates = runPythonService.runner(imageFile);
+        if (videoFile == null || !videoFile.exists() || !videoFile.isFile() || videoFile.length() == 0) {
+            log.error("El fichero proporcionado no es válido: {}", videoFile);
+            return null;
+        }
 
-        // Simulación de detección en distintos frames del video
-        // detectedPlates.add("1234ABC");
-        // detectedPlates.add("5678XYZ");
+        List<String> detectedPlates = runPythonService.runner(null, videoFile);
 
-        return null;
+        return detectedPlates;
     }
 }

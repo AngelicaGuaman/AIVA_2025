@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -21,15 +19,15 @@ public class RunPythonServiceImpl implements RunPythonService {
     private PythonConfig config;
 
     @Override
-    public List<String> runner(File videoFile) throws FileNotFoundException {
-        List<String> detectedPlates = new ArrayList<>();
+    public List<String> runner(File image, File video) throws FileNotFoundException {
+        Set<String> detectedPlates = new HashSet<>();
 
-        InputStream iSPythonScript = readResourceFile("main.py");
+        InputStream iSPythonScript = readResourceFile("core.py");
         InputStream iSLicenseModel = readResourceFile("license_plate_detector.onnx");
 
         try {
 
-            File tempScript = File.createTempFile("main", ".py");
+            File tempScript = File.createTempFile("core", ".py");
             tempScript.deleteOnExit();
 
             // Copiar contenido del script al archivo temporal
@@ -41,18 +39,31 @@ public class RunPythonServiceImpl implements RunPythonService {
             // Copiar contenido del script al archivo temporal
             Files.copy(iSLicenseModel, tempModel.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-            log.info("path {}",config.getPath());
+            log.info("path {}", config.getPath());
 
             // Ejecutar Python con argumentos
-            ProcessBuilder processBuilder = new ProcessBuilder(config.getPath(),
-                    tempScript.getAbsolutePath(), tempModel.getAbsolutePath(), videoFile.getAbsolutePath());
+            ProcessBuilder processBuilder = null;
 
+            if (image != null) {
+                processBuilder = new ProcessBuilder(config.getPath(),
+                        tempScript.getAbsolutePath(), "--model", tempModel.getAbsolutePath(), "--image", image.getAbsolutePath());
+            }
+
+            if (video != null) {
+                processBuilder = new ProcessBuilder(config.getPath(),
+                        tempScript.getAbsolutePath(), "--model", tempModel.getAbsolutePath(), "--video", video.getAbsolutePath());
+            }
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            reader.readLine();
-            detectedPlates = Arrays.asList(reader.readLine().replace("[", "").replace("]", "").replace("'", "").split(",\\s*"));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("[") && !line.equals("[]")) {
+                    detectedPlates.addAll(Arrays.asList(line.replace("[", "").replace("]", "").replace("'", "").split(",\\s*")));
+                }
+            }
+
             log.info("Matrículas detectadas: {}", detectedPlates);
 
             int exitCode = process.waitFor();
@@ -61,7 +72,7 @@ public class RunPythonServiceImpl implements RunPythonService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return detectedPlates;
+        return new ArrayList<>(detectedPlates);
     }
 
     private InputStream readResourceFile(String fileName) throws FileNotFoundException {
