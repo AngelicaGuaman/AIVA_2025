@@ -38,6 +38,19 @@ En la [documentación principal](../README.md) se puede observar ejemplos detall
 ```bash
 python main.py license_plate_detector.onnx data/frame0076.png
 ```
+El siguiente ejemplo muestra cómo ejecutar el script `core.py` del módulo PatrolScan utilizando un entorno virtual en Python.<br>
+A continuación, se incluyen dos comandos para procesar diferentes tipos de entradas:
+
+```bash
+patrolscan_dev/Scripts/python.exe src/patrolscan/core.py --model license_plate_detector.onnx --image src/patrolscan/data/frame0076.png
+```
+- `--model`: Especifica la ruta al modelo ONNX (license_plate_detector.onnx) utilizado para la detección de matrículas.
+- `--image`: Especifica la ruta de la imagen (frame0076.png) que será procesada.
+
+```bash
+patrolscan_dev/Scripts/python.exe src/patrolscan/core.py --model license_plate_detector.onnx --video src/patrolscan/data/video.mp4
+```
+- Similar al anterior, pero en este caso, el archivo proporcionado en `--video` es un video (video.mp4).
 
 ## 🐳 Uso con Docker
 
