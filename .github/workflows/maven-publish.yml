@@ -54,6 +54,7 @@ jobs:
 
       - name: List resources in target/classes
         run: ls -R target/classes
+        working-directory: patrol-scan
 
       - name: ⚙️ Test & coverage
         run: mvn clean verify
