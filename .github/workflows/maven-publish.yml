@@ -46,15 +46,21 @@ jobs:
           server-id: github
           settings-path: ${{ github.workspace }}
 
-      - name: ⚙️ Build, test & coverage
-        run: mvn clean verify
+      - name: ⚙️ Build
+        run: mvn clean install -DskipTests=false
         working-directory: patrol-scan
         env:
           PYTHON_PATH: ${{ env.PYTHON_PATH }}
 
       - name: List resources in target/classes
         run: ls -R target/classes
-        
+
+      - name: ⚙️ Test & coverage
+        run: mvn clean verify
+        working-directory: patrol-scan
+        env:
+          PYTHON_PATH: ${{ env.PYTHON_PATH }}
+
       - name: 📂 Upload JaCoCo coverage report
         uses: actions/upload-artifact@v4
         with:
