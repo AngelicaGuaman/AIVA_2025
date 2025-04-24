@@ -1,5 +1,7 @@
 # PatrolScan - Detección y Reconocimiento de Matrículas
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AngelicaGuaman_AIVA_2025&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=AngelicaGuaman_AIVA_2025)
+
 ## 🚓 Introducción
 **PatrolScan** es un sistema avanzado de visión artificial diseñado para la **detección y reconocimiento de matrículas** en tiempo real. Se integra en coches patrulla y opera de forma autónoma, proporcionando información instantánea sobre vehículos a los agentes de la Dirección General de Tráfico (**DGT**)
 

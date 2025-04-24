@@ -34,9 +34,11 @@ jobs:
         run: mvn clean verify
         working-directory: patrol-scan
 
-      - name: Check Jacoco report
-        run: test -f target/site/jacoco/jacoco.xml && echo "Found Jacoco report"
-        working-directory: patrol-scan
+      - name: 📂 Upload JaCoCo coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: patrol-scan/target/site/jacoco
       
       - name: 📊 Analyze with SonarQube
         uses: SonarSource/sonarqube-scan-action@v2.0.2

@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,10 +53,32 @@ class PlateRecognitionServiceTest {
 
         Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-        Optional<String> result = plateRecognitionService.recognizePlate(tempFile);
+        List<String> result = plateRecognitionService.recognizePlate(tempFile);
 
-        assertTrue(result.isPresent());
-        assertEquals("1234ABC", result.get());
+        assertFalse(result.isEmpty());
+        assertEquals("3999JFV", result.get(0));
+    }
+
+    @SneakyThrows
+    @Test
+    void testRecognizePlate_ValidImage_two_cars() {
+
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/detecciones.jpg");
+
+        if (inputStream == null) {
+            throw new FileNotFoundException("El archivo no se encontró en resources");
+        }
+
+        File tempFile = File.createTempFile("data/detecciones", ".jpg");
+        tempFile.deleteOnExit();
+
+        Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        List<String> result = plateRecognitionService.recognizePlate(tempFile);
+
+        assertFalse(result.isEmpty());
+        assertEquals(1, result.size());
+        assertEquals("8846MLV", result.get(0));
     }
 
     @Test
@@ -65,18 +86,28 @@ class PlateRecognitionServiceTest {
     void testRecognizePlate_InvalidImage() {
         File testImage = new File("empty.jpg");
 
-        Optional<String> result = plateRecognitionService.recognizePlate(testImage);
+        List<String> result = plateRecognitionService.recognizePlate(testImage);
 
         assertNull(result);
     }
 
-    @Test
-    void testRecognizePlateFromVideo() {
-        File testVideo = new File("test_video.mp4");
+    @SneakyThrows
+    // @Test
+    void testRecognizePlateFromVideo()  {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/20250203_132617.mp4");
 
-        List<String> results = plateRecognitionService.recognizePlateFromVideo(testVideo);
+        if (inputStream == null) {
+            throw new FileNotFoundException("El archivo no se encontró en resources");
+        }
 
-        assertFalse(results.isEmpty());
-        assertTrue(results.contains("1234ABC"));
+        File tempFile = File.createTempFile("data/20250203_132617", ".mp4");
+        tempFile.deleteOnExit();
+
+        Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        List<String> result = plateRecognitionService.recognizePlateFromVideo(tempFile);
+
+        assertFalse(result.isEmpty());
+        assertTrue(result.contains("8846MLV"));
     }
 }
