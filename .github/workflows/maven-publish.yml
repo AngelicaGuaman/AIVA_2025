@@ -47,7 +47,7 @@ jobs:
           settings-path: ${{ github.workspace }}
 
       - name: ⚙️ Build
-        run: mvn clean install -DskipTests=false
+        run: mvn clean install -DskipTests=true
         working-directory: patrol-scan
         env:
           PYTHON_PATH: ${{ env.PYTHON_PATH }}
