@@ -64,6 +64,7 @@ public class RunPythonServiceImpl implements RunPythonService {
             log.info("Python script finalizado con código: {}", exitCode);
 
         } catch (Exception e) {
+            log.error(e.getMessage());
             e.printStackTrace();
         }
         return new ArrayList<>(detectedPlates);
