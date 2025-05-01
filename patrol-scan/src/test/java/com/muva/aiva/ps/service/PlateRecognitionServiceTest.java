@@ -55,7 +55,7 @@ class PlateRecognitionServiceTest {
 
         List<String> result = plateRecognitionService.recognizePlate(tempFile);
 
-        assertFalse(result.isEmpty());
+        //assertFalse(result.isEmpty());
         assertEquals("3999JFV", result.get(0));
     }
 
@@ -76,7 +76,7 @@ class PlateRecognitionServiceTest {
 
         List<String> result = plateRecognitionService.recognizePlate(tempFile);
 
-        assertFalse(result.isEmpty());
+        //assertFalse(result.isEmpty());
         assertEquals(1, result.size());
         assertEquals("8846MLV", result.get(0));
     }
@@ -107,7 +107,7 @@ class PlateRecognitionServiceTest {
 
         List<String> result = plateRecognitionService.recognizePlateFromVideo(tempFile);
 
-        assertFalse(result.isEmpty());
+        //assertFalse(result.isEmpty());
         assertTrue(result.contains("8846MLV"));
     }
 }
