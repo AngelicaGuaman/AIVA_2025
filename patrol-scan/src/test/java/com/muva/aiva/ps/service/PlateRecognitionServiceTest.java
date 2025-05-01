@@ -55,7 +55,7 @@ class PlateRecognitionServiceTest {
 
         List<String> result = plateRecognitionService.recognizePlate(tempFile);
 
-        //assertFalse(result.isEmpty());
+        assertFalse(result.isEmpty());
         assertEquals("3999JFV", result.get(0));
     }
 

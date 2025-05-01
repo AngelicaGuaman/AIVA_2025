@@ -60,6 +60,7 @@ jobs:
         run: |
           cp modelos/license_plate_detector.onnx patrol-scan/src/main/resources/
           cp python/src/patrolscan/core.py patrol-scan/src/main/resources/
+          cp python/src/patrolscan/data/ejemplo1.png patrol-scan/src/test/resources/data/detecciones.jpg
 
       - name: Export MODEL_PATH to env
         run: echo "MODEL_PATH=${{ github.workspace }}/patrol-scan/src/main/resources/license_plate_detector.onnx" >> $GITHUB_ENV
