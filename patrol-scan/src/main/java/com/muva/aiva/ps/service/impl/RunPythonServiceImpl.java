@@ -23,7 +23,6 @@ public class RunPythonServiceImpl implements RunPythonService {
         Set<String> detectedPlates = new HashSet<>();
 
         InputStream iSPythonScript = readResourceFile("core.py");
-        InputStream iSLicenseModel = readResourceFile("license_plate_detector.onnx");
 
         try {
 
@@ -33,25 +32,20 @@ public class RunPythonServiceImpl implements RunPythonService {
             // Copiar contenido del script al archivo temporal
             Files.copy(iSPythonScript, tempScript.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-            File tempModel = File.createTempFile("license_plate_detector", ".onnx");
-            tempModel.deleteOnExit();
-
-            // Copiar contenido del script al archivo temporal
-            Files.copy(iSLicenseModel, tempModel.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-            log.info("path {}", config.getPath());
+            log.info("python path {}", config.getPath());
+            log.info("model path {}", config.getModel());
 
             // Ejecutar Python con argumentos
             ProcessBuilder processBuilder = null;
 
             if (image != null) {
                 processBuilder = new ProcessBuilder(config.getPath(),
-                        tempScript.getAbsolutePath(), "--model", tempModel.getAbsolutePath(), "--image", image.getAbsolutePath());
+                        tempScript.getAbsolutePath(), "--model", config.getModel(), "--image", image.getAbsolutePath());
             }
 
             if (video != null) {
                 processBuilder = new ProcessBuilder(config.getPath(),
-                        tempScript.getAbsolutePath(), "--model", tempModel.getAbsolutePath(), "--video", video.getAbsolutePath());
+                        tempScript.getAbsolutePath(), "--model", config.getModel(), "--video", video.getAbsolutePath());
             }
             processBuilder.redirectErrorStream(true);
 
