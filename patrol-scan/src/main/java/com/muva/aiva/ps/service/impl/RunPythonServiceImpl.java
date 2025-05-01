@@ -58,10 +58,20 @@ public class RunPythonServiceImpl implements RunPythonService {
                 }
             }
 
+            log.info("Running Python command: {}", processBuilder.command());
+
             log.info("Matrículas detectadas: {}", detectedPlates);
 
             int exitCode = process.waitFor();
             log.info("Python script finalizado con código: {}", exitCode);
+
+            if(exitCode != 0) {
+                BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                String errorLine;
+                while ((errorLine = errorReader.readLine()) != null) {
+                    log.error("Python error: {}", errorLine);
+                }
+            }
 
         } catch (Exception e) {
             log.error(e.getMessage());
