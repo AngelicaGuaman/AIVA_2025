@@ -86,22 +86,22 @@ jobs:
           name: jacoco-report
           path: patrol-scan/target/site/jacoco
       
-      - name: 📊 Analyze with SonarQube
-        uses: SonarSource/sonarqube-scan-action@v2.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        with:
-          args: >
-            -Dsonar.organization=patrolscan
-            -Dsonar.projectKey=AngelicaGuaman_AIVA_2025
-            -Dsonar.projectBaseDir=patrol-scan
-            -Dsonar.sources=src/main/java
-            -Dsonar.tests=src/test/java
-            -Dsonar.java.binaries=target/classes
-            -Dsonar.python.version=3.12
-            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+      # - name: 📊 Analyze with SonarQube
+      #   uses: SonarSource/sonarqube-scan-action@v2.0.2
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      #   with:
+      #     args: >
+      #       -Dsonar.organization=patrolscan
+      #       -Dsonar.projectKey=AngelicaGuaman_AIVA_2025
+      #       -Dsonar.projectBaseDir=patrol-scan
+      #       -Dsonar.sources=src/main/java
+      #       -Dsonar.tests=src/test/java
+      #       -Dsonar.java.binaries=target/classes
+      #       -Dsonar.python.version=3.12
+      #       -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
       - name: 📦 Publish to GitHub Packages
         run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
