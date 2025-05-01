@@ -59,6 +59,7 @@ jobs:
         working-directory: patrol-scan
         env:
           PYTHON_PATH: ${{ env.PYTHON_PATH }}
+          MODEL_PATH: ${{ github.workspace }}/patrol-scan/src/main/resources/license_plate_detector.onnx
 
       - name: List resources in target/classes
         run: ls -R patrol-scan/target/classes
