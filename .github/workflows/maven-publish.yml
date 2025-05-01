@@ -54,12 +54,18 @@ jobs:
           cp modelos/license_plate_detector.onnx patrol-scan/src/main/resources/
           cp python/src/patrolscan/core.py patrol-scan/src/main/resources/
 
+      - name: Export MODEL_PATH to env
+        run: echo "MODEL_PATH=${{ github.workspace }}/patrol-scan/src/main/resources/license_plate_detector.onnx" >> $GITHUB_ENV
+        
+      - name: Show MODEL_PATH
+        run: echo "Model path is $MODEL_PATH"
+  
       - name: ⚙️ Build
         run: mvn clean install -DskipTests=true
         working-directory: patrol-scan
         env:
           PYTHON_PATH: ${{ env.PYTHON_PATH }}
-          MODEL_PATH: ${{ github.workspace }}/patrol-scan/src/main/resources/license_plate_detector.onnx
+          MODEL_PATH: ${{ env.MODEL_PATH }}
 
       - name: List resources in target/classes
         run: ls -R patrol-scan/target/classes
