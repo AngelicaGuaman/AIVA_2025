@@ -72,6 +72,7 @@ jobs:
         working-directory: patrol-scan
         env:
           PYTHON_PATH: ${{ env.PYTHON_PATH }}
+          MODEL_PATH: ${{ github.workspace }}/patrol-scan/src/main/resources/license_plate_detector.onnx
 
       - name: 📂 Upload JaCoCo coverage report
         uses: actions/upload-artifact@v4
