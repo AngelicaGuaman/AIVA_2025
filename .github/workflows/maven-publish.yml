@@ -49,16 +49,16 @@ jobs:
           server-id: github
           settings-path: ${{ github.workspace }}
         
+      - name: 📁 Copy resource files
+        run: |
+          cp modelos/license_plate_detector.onnx patrol-scan/src/main/resources/
+          cp python/src/patrolscan/core.py patrol-scan/src/main/resources/
+
       - name: ⚙️ Build
         run: mvn clean install -DskipTests=true
         working-directory: patrol-scan
         env:
           PYTHON_PATH: ${{ env.PYTHON_PATH }}
-
-      - name: 📁 Copy resource files
-        run: |
-          cp modelos/license_plate_detector.onnx patrol-scan/src/main/resources/
-          cp python/src/patrolscan/core.py patrol-scan/src/main/resources/
 
       - name: List resources in target/classes
         run: ls -R patrol-scan/target/classes
