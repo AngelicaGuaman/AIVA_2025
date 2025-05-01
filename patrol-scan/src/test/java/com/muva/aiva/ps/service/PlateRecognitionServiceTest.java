@@ -63,22 +63,22 @@ class PlateRecognitionServiceTest {
     @Test
     void testRecognizePlate_ValidImage_two_cars() {
 
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/detecciones.jpg");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/two_cars.png");
 
         if (inputStream == null) {
             throw new FileNotFoundException("El archivo no se encontró en resources");
         }
 
-        File tempFile = File.createTempFile("data/detecciones", ".jpg");
+        File tempFile = File.createTempFile("data/two_cars", ".png");
         tempFile.deleteOnExit();
 
         Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
         List<String> result = plateRecognitionService.recognizePlate(tempFile);
 
-        //assertFalse(result.isEmpty());
+        assertFalse(result.isEmpty());
         assertEquals(1, result.size());
-        assertEquals("8846MLV", result.get(0));
+        assertEquals("2555JNZ", result.get(0));
     }
 
     @Test
