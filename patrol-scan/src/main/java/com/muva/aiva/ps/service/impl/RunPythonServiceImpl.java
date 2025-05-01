@@ -40,6 +40,8 @@ public class RunPythonServiceImpl implements RunPythonService {
                 log.error("Modelo ONNX no encontrado en {}", config.getModel());
             }
 
+            log.info("Size: {}",modelFile.length());
+            
             // Ejecutar Python con argumentos
             ProcessBuilder processBuilder = null;
 
