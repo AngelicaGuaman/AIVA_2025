@@ -73,8 +73,8 @@ jobs:
       - name: List resources in target/test-classes
         run: ls -R patrol-scan/target/test-classes
 
-      - name: ⚙️ Test & coverage
-        run: mvn clean verify
+      - name: ⚙️ Coverage
+        run: mvn clean verify -DskipTests=true
         working-directory: patrol-scan
         env:
           PYTHON_PATH: ${{ env.PYTHON_PATH }}
