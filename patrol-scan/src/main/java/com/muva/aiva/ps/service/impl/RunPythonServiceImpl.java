@@ -35,6 +35,11 @@ public class RunPythonServiceImpl implements RunPythonService {
             log.info("python path {}", config.getPath());
             log.info("model path {}", config.getModel());
 
+            File modelFile = new File(config.getModel());
+            if (!modelFile.exists()) {
+                log.error("Modelo ONNX no encontrado en {}", config.getModel());
+            }
+
             // Ejecutar Python con argumentos
             ProcessBuilder processBuilder = null;
 
@@ -65,12 +70,10 @@ public class RunPythonServiceImpl implements RunPythonService {
             int exitCode = process.waitFor();
             log.info("Python script finalizado con código: {}", exitCode);
 
-            if(exitCode != 0) {
-                BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-                String errorLine;
-                while ((errorLine = errorReader.readLine()) != null) {
-                    log.error("Python error: {}", errorLine);
-                }
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String errorLine;
+            while ((errorLine = errorReader.readLine()) != null) {
+                log.error("Python error: {}", errorLine);
             }
 
         } catch (Exception e) {
