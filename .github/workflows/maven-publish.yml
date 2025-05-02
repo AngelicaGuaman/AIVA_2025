@@ -87,7 +87,7 @@ jobs:
       #    PYTHON_PATH: ${{ env.PYTHON_PATH }}
       #    MODEL_PATH: ${{ github.workspace }}/patrol-scan/src/main/resources/license_plate_detector.onnx
 
-      - name: ⚙️ Coverage
+      - name: ⚙️ Test & Coverage
         run: mvn clean verify
         working-directory: patrol-scan
         env:
