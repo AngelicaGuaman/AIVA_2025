@@ -83,7 +83,7 @@ mvn clean install
 <dependency>
     <groupId>com.muva.aiva.ps</groupId>
     <artifactId>patrol-scan-lib</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
 </dependency>
 ```
 

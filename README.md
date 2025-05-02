@@ -56,6 +56,7 @@ El sistema principal se desarrolla en Python, y mediante el uso de un wrapper de
     </p>
 
 3. **Resultado:** Matrícula detectada: `4971JBV`
+
     ![Resultado ejemplo 1](documentation/ejemplos/ejemplo1/resultado.png)
 
 ### Ejemplo 2: Escenario: coches aparcados en un garaje con poca iluminación.
@@ -83,6 +84,7 @@ El sistema principal se desarrolla en Python, y mediante el uso de un wrapper de
     </p>
 
 3. **Resultado:** Matrículas detectadas: `8846MLV`, `5429DFM`
+
     ![Resultado ejemplo 1](documentation/ejemplos/ejemplo2/resultado.png)
 
 ## 🏗 Diagramas UML
