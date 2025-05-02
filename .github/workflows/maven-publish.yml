@@ -80,12 +80,27 @@ jobs:
       - name: List resources in target/test-classes
         run: ls -R patrol-scan/target/test-classes
 
+      - name: 🖼️ Check image exists and is not empty
+        run: |
+          ls -lh /tmp/frame_134_compressed*.jpg
+          file /tmp/frame_134_compressed*.jpg
+          stat /tmp/frame_134_compressed*.jpg || exit 1
+          [ -s /tmp/frame_134_compressed*.jpg ] || (echo "Image is empty" && exit 1)
+        if: always()
+
       - name: ⚙️ Test
         run: mvn test -Dtest=PlateRecognitionServiceTest#testRecognizePlate_ValidImage_two_cars
         working-directory: patrol-scan
         env:
           PYTHON_PATH: ${{ env.PYTHON_PATH }}
           MODEL_PATH: ${{ github.workspace }}/patrol-scan/src/main/resources/license_plate_detector.onnx
+
+      - name: Upload image on test failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: failed_test_image
+          path: /tmp/frame_134_compressed*.jpg
 
       - name: ⚙️ Coverage
         run: mvn clean verify
