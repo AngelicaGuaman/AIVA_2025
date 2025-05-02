@@ -49,7 +49,7 @@ def is_valid_license_plate(license_plate, verbose=False):
     """
     # Definir patrones para los formatos de matrícula
     regular_pattern = r"^\d{4}[A-Z]{3}$"
-    special_pattern = r"^[A-Z]{1}\d{4}[A-Z]{3}$"
+    special_pattern = r"^[A-Z]\d{4}[A-Z]{3}$"
 
     # Validar contra los patrones
     if re.match(regular_pattern, license_plate):
