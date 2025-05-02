@@ -151,6 +151,7 @@ class PatrolScan:
 
 if __name__ == "__main__":
     import argparse
+    import sys
 
     parser = argparse.ArgumentParser(description="Procesar imágenes o videos con PatrolScan.")
     parser.add_argument("--model", required=True, help="Ruta al modelo del detector.")
@@ -162,6 +163,11 @@ if __name__ == "__main__":
     model_path = args.model
     image_path = args.image
     video_path = args.video
+
+    image_bytes = None
+    
+    if image_path is None and video_path is None:
+        image_bytes = sys.stdin.buffer.read()
 
     config = Config()
     config.modelo_detector_path = model_path
@@ -181,7 +187,7 @@ if __name__ == "__main__":
         
         result = patrolscan.scan_numpy_array(image_numpy_array)
         print(result)
-    else:
+    elif video_path is not None:
         # It is video
         video = cv2.VideoCapture(video_path)
         if not video.isOpened():
@@ -214,3 +220,15 @@ if __name__ == "__main__":
 
         video.release()
         cv2.destroyAllWindows()
+    elif image_bytes is not None:
+        try:
+            image_base64 = image_bytes.decode('utf-8')
+            result = patrolscan.scan_base64(image_base64)
+        except (UnicodeDecodeError, base64.binascii.Error):
+            image_str = image_bytes.decode('utf-8')
+            image_bytes_decoded = base64.b64decode(image_str)
+            result = patrolscan.scan_bytes(image_bytes_decoded)
+        print(result)
+    else:
+        raise ValueError("No se proporcionó ninguna imagen ni video para procesar.")
+    
