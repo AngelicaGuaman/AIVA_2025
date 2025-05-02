@@ -80,6 +80,13 @@ jobs:
       - name: List resources in target/test-classes
         run: ls -R patrol-scan/target/test-classes
 
+      - name: ⚙️ Test
+        run: mvn clean -Dtest=PlateRecognitionServiceTest#testRecognizePlate_ValidImage_two_cars
+        working-directory: patrol-scan
+        env:
+          PYTHON_PATH: ${{ env.PYTHON_PATH }}
+          MODEL_PATH: ${{ github.workspace }}/patrol-scan/src/main/resources/license_plate_detector.onnx
+
       - name: ⚙️ Coverage
         run: mvn clean verify
         working-directory: patrol-scan
