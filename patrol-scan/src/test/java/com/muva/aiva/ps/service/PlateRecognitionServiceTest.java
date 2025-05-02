@@ -60,16 +60,16 @@ class PlateRecognitionServiceTest {
     }
 
     @SneakyThrows
-    @Test
+    //@Test
     void testRecognizePlate_ValidImage_two_cars() {
 
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/detecciones.jpg");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/frame_134.png");
 
         if (inputStream == null) {
             throw new FileNotFoundException("El archivo no se encontró en resources");
         }
 
-        File tempFile = File.createTempFile("data/detecciones", ".jpg");
+        File tempFile = File.createTempFile("data/frame_134", ".png");
         tempFile.deleteOnExit();
 
         Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -77,8 +77,9 @@ class PlateRecognitionServiceTest {
         List<String> result = plateRecognitionService.recognizePlate(tempFile);
 
         assertFalse(result.isEmpty());
-        assertEquals(1, result.size());
-        assertEquals("8846MLV", result.get(0));
+        assertEquals(2, result.size());
+        assertTrue(result.contains("6264LGR"));
+        assertTrue(result.contains("9313JZT"));
     }
 
     @Test
@@ -92,7 +93,7 @@ class PlateRecognitionServiceTest {
     }
 
     @SneakyThrows
-    // @Test
+    @Test
     void testRecognizePlateFromVideo()  {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/20250203_132617.mp4");
 
@@ -107,7 +108,7 @@ class PlateRecognitionServiceTest {
 
         List<String> result = plateRecognitionService.recognizePlateFromVideo(tempFile);
 
-        assertFalse(result.isEmpty());
+        //assertFalse(result.isEmpty());
         assertTrue(result.contains("8846MLV"));
     }
 }

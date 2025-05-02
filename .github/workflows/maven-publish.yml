@@ -15,11 +15,38 @@ jobs:
     permissions:
       contents: read
       packages: write
+      pull-requests: read # allows SonarQube to decorate PRs with analysis results
 
     steps:
       - name: 🧾 Checkout code
         uses: actions/checkout@v4
+        with:
+          lfs: true
+      
+      - name: Install Git LFS
+        run: |
+          git lfs install
+          git lfs pull
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        working-directory: python
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1 libglib2.0-0
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+        
+      - name: Export Python path to env
+        run: echo "PYTHON_PATH=$(which python)" >> $GITHUB_ENV
+
+      - name: Show Python path
+        run: echo "Python path is $PYTHON_PATH"
+      
       - name: ☕ Setup Java 21
         uses: actions/setup-java@v4
         with:
@@ -27,10 +54,47 @@ jobs:
           java-version: '21'
           server-id: github
           settings-path: ${{ github.workspace }}
+        
+      - name: 📁 Copy resource files
+        run: |
+          cp modelos/license_plate_detector.onnx patrol-scan/src/main/resources/
+          cp python/src/patrolscan/core.py patrol-scan/src/main/resources/
 
-      - name: ⚙️ Build with Maven
-        run: mvn clean verify # mvn -B package --file pom.xml
+      - name: Export MODEL_PATH to env
+        run: echo "MODEL_PATH=${{ github.workspace }}/patrol-scan/src/main/resources/license_plate_detector.onnx" >> $GITHUB_ENV
+        
+      - name: Show MODEL_PATH
+        run: echo "Model path is $MODEL_PATH"
+  
+      - name: ⚙️ Build
+        run: mvn clean install -DskipTests=true
         working-directory: patrol-scan
+        env:
+          PYTHON_PATH: ${{ env.PYTHON_PATH }}
+          MODEL_PATH: ${{ env.MODEL_PATH }}
+
+      - name: List resources in target/classes
+        run: ls -R patrol-scan/target/classes
+
+      - name: List resources in target/test-classes
+        run: ls -R patrol-scan/target/test-classes
+
+      #- name: ⚙️ Test
+      #  run: mvn test -Dtest=PlateRecognitionServiceTest#testRecognizePlate_ValidImage_two_cars
+      #  working-directory: patrol-scan
+      #  env:
+      #    PYTHON_PATH: ${{ env.PYTHON_PATH }}
+      #    MODEL_PATH: ${{ github.workspace }}/patrol-scan/src/main/resources/license_plate_detector.onnx
+
+      - name: ⚙️ Test & Coverage
+        run: mvn clean verify
+        working-directory: patrol-scan
+        env:
+          PYTHON_PATH: ${{ env.PYTHON_PATH }}
+          MODEL_PATH: ${{ github.workspace }}/patrol-scan/src/main/resources/license_plate_detector.onnx
+
+      - name: List resources in target/site
+        run: ls -R patrol-scan/target/site
 
       - name: 📂 Upload JaCoCo coverage report
         uses: actions/upload-artifact@v4
@@ -38,8 +102,25 @@ jobs:
           name: jacoco-report
           path: patrol-scan/target/site/jacoco
       
+      # - name: 📊 Analyze with SonarQube
+      #   uses: SonarSource/sonarqube-scan-action@v2.0.2
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      #   with:
+      #     args: >
+      #       -Dsonar.organization=patrolscan
+      #       -Dsonar.projectKey=AngelicaGuaman_AIVA_2025
+      #       -Dsonar.projectBaseDir=patrol-scan
+      #       -Dsonar.sources=src/main/java
+      #       -Dsonar.tests=src/test/java
+      #       -Dsonar.java.binaries=target/classes
+      #       -Dsonar.python.version=3.12
+      #       -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+
       - name: 📦 Publish to GitHub Packages
-        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+        run: mvn deploy -DskipTests=true -s $GITHUB_WORKSPACE/settings.xml
         working-directory: patrol-scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

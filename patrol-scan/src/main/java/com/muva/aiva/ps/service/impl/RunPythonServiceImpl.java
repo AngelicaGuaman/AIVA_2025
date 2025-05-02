@@ -35,6 +35,11 @@ public class RunPythonServiceImpl implements RunPythonService {
             log.info("python path {}", config.getPath());
             log.info("model path {}", config.getModel());
 
+            File modelFile = new File(config.getModel());
+            if (!modelFile.exists()) {
+                log.error("Modelo ONNX no encontrado en {}", config.getModel());
+            }
+            
             // Ejecutar Python con argumentos
             ProcessBuilder processBuilder = null;
 
@@ -58,12 +63,14 @@ public class RunPythonServiceImpl implements RunPythonService {
                 }
             }
 
+            log.info("Running Python command: {}", processBuilder.command());
             log.info("Matrículas detectadas: {}", detectedPlates);
 
             int exitCode = process.waitFor();
             log.info("Python script finalizado con código: {}", exitCode);
 
         } catch (Exception e) {
+            log.error(e.getMessage());
             e.printStackTrace();
         }
         return new ArrayList<>(detectedPlates);

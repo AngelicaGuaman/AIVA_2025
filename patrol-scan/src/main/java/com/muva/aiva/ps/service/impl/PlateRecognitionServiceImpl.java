@@ -30,7 +30,7 @@ public class PlateRecognitionServiceImpl implements PlateRecognitionService {
             return null;
         }
 
-        log.info("Procesando la imagen {}", imageFile.getName());
+        log.info("Procesando la imagen {} con tamaño {}", imageFile.getName(), imageFile.length());
 
         List<String> detectedPlates = runPythonService.runner(imageFile, null);
 
