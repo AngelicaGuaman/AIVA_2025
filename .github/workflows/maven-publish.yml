@@ -81,7 +81,7 @@ jobs:
         run: ls -R patrol-scan/target/test-classes
 
       - name: ⚙️ Test
-        run: mvn clean -Dtest=PlateRecognitionServiceTest#testRecognizePlate_ValidImage_two_cars
+        run: mvn test -Dtest=PlateRecognitionServiceTest#testRecognizePlate_ValidImage_two_cars
         working-directory: patrol-scan
         env:
           PYTHON_PATH: ${{ env.PYTHON_PATH }}
