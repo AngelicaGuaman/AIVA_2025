@@ -6,12 +6,12 @@ name: 🚀 Maven CI/CD to GitHub Packages
 on:
   push:
     branches:
-      - main
-      - develop
-      - 77-calidad-de-código-en-python
+      - disable-main-lfs
+      - disable-develop-lfs
+      - disable-77-calidad-de-código-en-python
   pull_request:
     branches:
-      - develop
+      - disable-develop-lfs
 
 jobs:
   build-and-publish:
