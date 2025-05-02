@@ -60,16 +60,16 @@ class PlateRecognitionServiceTest {
     }
 
     @SneakyThrows
-    //@Test
+    @Test
     void testRecognizePlate_ValidImage_two_cars() {
 
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/frame_134_compressed.jpg");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/frame_134.png");
 
         if (inputStream == null) {
             throw new FileNotFoundException("El archivo no se encontró en resources");
         }
 
-        File tempFile = File.createTempFile("data/frame_134_compressed", ".jpg");
+        File tempFile = File.createTempFile("data/frame_134", ".png");
         tempFile.deleteOnExit();
 
         Files.copy(inputStream, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
