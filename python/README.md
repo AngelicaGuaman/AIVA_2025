@@ -27,30 +27,42 @@ pip install -e .[dev]
 pytest
 ```
 
-Para poder utilizar PatrolScan es necesario el modelo `license_plate_detector.pt` que no se encuentra subido en el repositorio público, junto con su dataset.
+Para poder utilizar PatrolScan es necesario el modelo `license_plate_detector.pt` que se convertirá a ONNX `license_plate_detector.onnx`. Este modelo se encuenta en la ruta `modelos/license_plate_detector.onnx` y se ha subido al repositorio usando Git LFS.
 
 ## 📸 Ejemplos de funcionamiento
 
 En la [documentación principal](../README.md) se puede observar ejemplos detallados del funcionamiento de PatrolScan.
 
 ## 🚀 Uso
-
+Para probar la primera versión de `PatrolScan` se puede usar el siguiente comando:
 ```bash
 python main.py license_plate_detector.onnx data/frame0076.png
 ```
-El siguiente ejemplo muestra cómo ejecutar el script `core.py` del módulo PatrolScan utilizando un entorno virtual en Python.<br>
-A continuación, se incluyen dos comandos para procesar diferentes tipos de entradas:
+En la última versión de `PatrolScan`, se ha incorporado la parametrización de la entrada a procesar: imagen, video o imagen en formato `Base64`. Además, se debe especificar el modelo ONNX a utilizar. 
 
+En los siguientes ejemplos, se detalla cómo ejecutar el script principal `core.py` del módulo `PatrolScan` utilizando un entorno virtual en Python.<br>
+Cada ejemplo muestra cómo procesar los distintos tipos de entrada:
+
+### Procesar una imagen
 ```bash
-patrolscan_dev/Scripts/python.exe src/patrolscan/core.py --model license_plate_detector.onnx --image src/patrolscan/data/frame0076.png
+patrolscan_dev/Scripts/python.exe src/patrolscan/core.py --model ../modelos/license_plate_detector.onnx --image src/patrolscan/data/frame0076.png
 ```
 - `--model`: Especifica la ruta al modelo ONNX (license_plate_detector.onnx) utilizado para la detección de matrículas.
 - `--image`: Especifica la ruta de la imagen (frame0076.png) que será procesada.
 
+### Procesar un vídeo
 ```bash
-patrolscan_dev/Scripts/python.exe src/patrolscan/core.py --model license_plate_detector.onnx --video src/patrolscan/data/video.mp4
+patrolscan_dev/Scripts/python.exe src/patrolscan/core.py --model ../modelos/license_plate_detector.onnx --video src/patrolscan/data/video.mp4
 ```
 - Similar al anterior, pero en este caso, el archivo proporcionado en `--video` es un video (video.mp4).
+
+### Procesar una imagen codificada en Base64
+```bash
+base64 frame_134.png > image.txt
+cat image.txt | patrolscan_dev/Scripts/python.exe src/patrolscan/core.py --model ../modelos/license_plate_detector.onnx
+```
+
+- La imagen se convierte a texto Base64 y se envía al script a través de la entrada estándar (stdin).
 
 ## 🐳 Uso con Docker
 
