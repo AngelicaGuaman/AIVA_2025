@@ -14,4 +14,12 @@ public interface RunPythonService {
      * @throws FileNotFoundException Si el archivo de imagen no se encuentra.
      */
     List<String> runner (File image, File video) throws FileNotFoundException;
+
+    /**
+     * Ejecuta un script de Python para procesar una imagen en formato base64 y devolver la matrícula detectada.
+     *
+     * @param base64Image Cadena en formato base64 que representa la imagen.
+     * @return Las matrículas detectadas en la imagen.
+     */
+    List<String> runner (String base64Image);
 }
