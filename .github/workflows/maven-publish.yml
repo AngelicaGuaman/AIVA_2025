@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: 🧾 Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           lfs: true
       
@@ -94,13 +94,6 @@ jobs:
         env:
           PYTHON_PATH: ${{ env.PYTHON_PATH }}
           MODEL_PATH: ${{ github.workspace }}/patrol-scan/src/main/resources/license_plate_detector.onnx
-
-      - name: Upload image on test failure
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: failed_test_image
-          path: /tmp/frame_134_compressed*.jpg
 
       - name: ⚙️ Coverage
         run: mvn clean verify
