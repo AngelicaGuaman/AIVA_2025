@@ -1,4 +1,5 @@
 import cv2
+import re
 
 def obtener_recortes_imagenes(lista_zonas_detectadas, imagen_original):
     """
@@ -35,47 +36,31 @@ def preprocess_for_easyocr(image):
 
 def is_valid_license_plate(license_plate, verbose=False):
     """
-    Valida la matrícula según el formato español (4 dígitos + 3 letras),
-    o (1 letra + 4 dígitos + 3 letras) para matrículas históricas, de remolque, etc.
+    Valida la matrícula según el formato español:
+    - Formato regular: 4 dígitos + 3 letras (e.g., 1234ABC)
+    - Formato especial (históricas, de remolque, etc): 1 letra + 4 dígitos + 3 letras (e.g., A1234BCD)
+    
     Args:
         license_plate (str): Matrícula a validar
         verbose (bool): Si es True, imprime mensajes detallados
+    
+    Returns:
+        bool: True si la matrícula es válida, False en caso contrario
     """
-    
-    if len(license_plate) != 7 and len(license_plate) != 8:
+    # Definir patrones para los formatos de matrícula
+    regular_pattern = r"^\d{4}[A-Z]{3}$"
+    special_pattern = r"^[A-Z]\d{4}[A-Z]{3}$"
+
+    # Validar contra los patrones
+    if re.match(regular_pattern, license_plate):
         if verbose:
-            print(f"License plate '{license_plate}' is invalid: must be 7 characters long.")
+            print(f"License plate '{license_plate}' is valid (regular format).")
+        return True
+    elif re.match(special_pattern, license_plate):
+        if verbose:
+            print(f"License plate '{license_plate}' is valid (special format).")
+        return True
+    else:
+        if verbose:
+            print(f"License plate '{license_plate}' is invalid.")
         return False
-
-    if len(license_plate) == 7:
-        if verbose:
-            print(f"Taxis, VTC, regular license plate format detected.")
-        
-        if not license_plate[:4].isdigit():
-            if verbose:
-                print(f"License plate '{license_plate}' is invalid: first 4 characters must be digits.")
-            return False
-        if not license_plate[4:].isalpha():
-            if verbose:
-                print(f"License plate '{license_plate}' is invalid: last 3 characters must be letters.")
-            return False
-        if not license_plate[4:].isupper():
-            if verbose:
-                print(f"License plate '{license_plate}' is invalid: last 3 characters must be uppercase letters.")
-            return False
-    
-    if len(license_plate) == 8:
-        if verbose:
-            print(f"License plate format detected: trailers, historical, state forces, etc.")
-
-        if not (license_plate[0].isalpha() and license_plate[0].isupper() and 
-                license_plate[1:5].isdigit() and 
-                license_plate[5:8].isalpha() and license_plate[5:8].isupper()):
-            if verbose:
-                print(f"License plate '{license_plate}' is invalid: first character must be an uppercase letter, next 4 characters must be digits, and last 3 characters must be uppercase letters.")
-            return False
-
-
-    if verbose:
-        print(f"License plate '{license_plate}' is valid")
-    return True

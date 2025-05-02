@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.muva.aiva.ps</groupId>
 	<artifactId>patrol-scan-lib</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Patrol Scan Library</name>
 	<description>Librería para la identificación y reconocimiento de matrículas</description>

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,6 +46,13 @@ public class PlateRecognitionServiceImpl implements PlateRecognitionService {
         }
 
         List<String> detectedPlates = runPythonService.runner(null, videoFile);
+
+        return detectedPlates;
+    }
+
+    @Override
+    public List<String> recognizePlate(String base64Image) {
+        List<String> detectedPlates = runPythonService.runner(base64Image);
 
         return detectedPlates;
     }

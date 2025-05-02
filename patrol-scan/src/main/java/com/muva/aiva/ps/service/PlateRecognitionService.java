@@ -7,7 +7,7 @@ import java.util.List;
 public interface PlateRecognitionService {
 
     /**
-     * Reconoce una matrícula en una imagen.
+     * Reconoce matrículas en una imagen.
      *
      * @param imageFile Archivo de imagen que contiene la matrícula.
      * @return Las matrículas detectadas en la imagen.
@@ -22,4 +22,12 @@ public interface PlateRecognitionService {
      * @return Una lista de matrículas detectadas en distintos fotogramas.
      */
     List<String> recognizePlateFromVideo(File videoFile) throws FileNotFoundException;
+
+    /**
+     * Reconoce matrículas en una imagen en formato base64.
+     *
+     * @param base64Image Cadena en formato base64 que representa la imagen.
+     * @return Las matrículas detectadas en la imagen.
+     */
+    List<String> recognizePlate(String base64Image);
 }

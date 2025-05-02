@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Base64;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,7 +61,7 @@ class PlateRecognitionServiceTest {
     }
 
     @SneakyThrows
-    //@Test
+        //@Test
     void testRecognizePlate_ValidImage_two_cars() {
 
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/frame_134.png");
@@ -108,7 +109,35 @@ class PlateRecognitionServiceTest {
 
         List<String> result = plateRecognitionService.recognizePlateFromVideo(tempFile);
 
-        //assertFalse(result.isEmpty());
+        assertFalse(result.isEmpty());
         assertTrue(result.contains("8846MLV"));
+    }
+
+    @Test
+    @SneakyThrows
+    void testRecognizePlate_InvalidVideo() {
+        File testImage = new File("empty.mp4");
+
+        List<String> result = plateRecognitionService.recognizePlateFromVideo(testImage);
+
+        assertNull(result);
+    }
+
+    @SneakyThrows
+    //@Test
+    void testRecognizePlate_ValidBase64Image() {
+
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/frame0076.png");
+
+        if (inputStream == null) {
+            throw new FileNotFoundException("El archivo no se encontró en resources");
+        }
+
+        String base64Image = Base64.getEncoder().encodeToString(inputStream.readAllBytes());
+
+        List<String> result = plateRecognitionService.recognizePlate(base64Image);
+
+        assertFalse(result.isEmpty());
+        assertEquals("3999JFV", result.get(0));
     }
 }
