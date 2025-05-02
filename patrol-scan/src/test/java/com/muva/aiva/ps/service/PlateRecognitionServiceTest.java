@@ -93,7 +93,7 @@ class PlateRecognitionServiceTest {
     }
 
     @SneakyThrows
-        // @Test
+    @Test
     void testRecognizePlateFromVideo()  {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/20250203_132617.mp4");
 
