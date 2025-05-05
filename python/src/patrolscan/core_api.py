@@ -9,9 +9,6 @@ app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-#model_path = os.path.join(base_dir, '..', '..', '..', 'modelos', 'license_plate_detector.onnx')
-#model_path = os.path.join(base_dir, 'license_plate_detector.onnx')
-
 model_path = 'license_plate_detector.onnx'
 
 print(f"Exists: {os.path.exists(model_path)}")
