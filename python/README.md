@@ -120,6 +120,34 @@ docker pull ghcr.io/angelicaguaman/aiva_2025/patrolscan-python:latest
 
 ![Resultado de la imagen procesada](../images/python-docker-result.png)
 
+## 🐳 Imagen Docker con API REST
+
+Para agilizar el proceso de evaluación y validación, se han creado 3 APIs que nos permite probar el motor de `PatrolScan`:
+
+```bash
+docker run --rm -p 5000:5000 \
+ghcr.io/angelicaguaman/aiva_2025/patrolscan-python-api \
+python src/patrolscan/core_api.py
+```
+
+### Procesamiento de una imagen
+
+POST http://localhost:5000/patrolscan/api/v1/file
+
+![Resultado de la imagen procesada](../images/PlateRecognition_file.png)
+
+### Procesamiento de varias imágenes a la vez
+
+POST http://localhost:5000/patrolscan/api/v1/files
+
+![Resultado de la imagen procesada](../images/PlateRecognition_file.png)
+
+### Procesamiento de un vídeo
+
+POST http://localhost:5000/patrolscan/api/v1/video
+
+![Resultado de la imagen procesada](../images/PlateRecognition_video.png)
+
 ## 🏗 Diagramas UML
 
 ### Diagrama de clases
