@@ -96,18 +96,6 @@ def scan_video_file():
         all_results = []
 
         while video.isOpened():
-            ret, frame = video.read()
-            if not ret:
-                break
-
-            frame_rate = int(video.get(cv2.CAP_PROP_FPS))
-            frame_interval = max(1, frame_rate // 2)  # Process every second frame
-
-            for _ in range(frame_interval - 1):
-                ret, _ = video.read()
-                if not ret:
-                    break
-
             # Collect 10 frames to pass to PatrolScan
             frames_batch = []
             for _ in range(10):
