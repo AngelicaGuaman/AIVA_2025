@@ -34,12 +34,9 @@ El sistema principal se desarrolla en Python, y mediante el uso de un wrapper de
 ### Requisitos
 [Próximamente]
 
-### Instalación
+### Instalación y uso
 - Para el módulo Python, consulta la [documentación de instalación aquí](python/README.md).<br>
 - Para el módulo Java, consulta la [documentación de instalación aquí](patrol-scan/README.md).
-
-### Uso
-[Próximamente]
 
 
 ## 📸 Ejemplos de funcionamiento
@@ -118,3 +115,13 @@ El sistema principal se desarrolla en Python, y mediante el uso de un wrapper de
 #### Diagrama de actividad del módulo Java
 
 ![Diagrama de actividad del módulo Java](documentation/diagram/actividad/DiagramaActividadJava.jpg)
+
+### Diagrama de despliegue mínimo
+
+![Diagrama de despliegue mínimo](documentation/diagram/despliegue/DiagramaDespliegueMinimo.png)
+
+![Diagrama de despliegue mínimo docker API](documentation/diagram/despliegue/DespliegueMinimoDockerAPI.png)
+
+### Diagrama de despliegue estándar
+
+![Diagrama de despliegue estándar](documentation/diagram/despliegue/DiagramaDespliegueEstándar.png)
