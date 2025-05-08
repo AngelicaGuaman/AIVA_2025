@@ -31,10 +31,6 @@ El sistema principal se desarrolla en Python, y mediante el uso de un wrapper de
 ![Diagrama de arquitectura del sistema](images/diagramaPatrolScan.svg)
 
 ## 🚀 Instalación y uso
-### Requisitos
-[Próximamente]
-
-### Instalación y uso
 - Para el módulo Python, consulta la [documentación de instalación aquí](python/README.md).<br>
 - Para el módulo Java, consulta la [documentación de instalación aquí](patrol-scan/README.md).
 
